@@ -2,8 +2,8 @@ import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
 
 // Allow streaming responses up to 30 seconds
-export const maxDuration = 300;
-
+export const maxDuration = 60;
+//300
 type LanguageModelV1 = any; // Temporalmente, hasta que encuentres el tipo correcto
 
 
