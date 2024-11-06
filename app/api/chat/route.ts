@@ -3,8 +3,8 @@ import { streamText } from "ai";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 60;
-//300
-type LanguageModelV1 = any; // Temporalmente, hasta que encuentres el tipo correcto
+//anteriormente 300 segundos, pero vercel gratuito solo permita maximo 60 segundos
+type LanguageModelV1 = any; 
 
 
 
