@@ -4,11 +4,15 @@ import { streamText } from "ai";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 300;
 
+type LanguageModelV1 = any; // Temporalmente, hasta que encuentres el tipo correcto
+
+
+
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
   const result = await streamText({
-    model: openai("gpt-4o-mini"),
+    model: openai("gpt-4o-mini") as unknown as LanguageModelV1,
     messages,
   });
 

@@ -1,4 +1,3 @@
-import { AVATARS, VOICES } from "@/app/lib/constants";
 import "@/styles/globals.css";
 
 import {
@@ -12,9 +11,6 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Input,
-  Select,
-  SelectItem,
   Spinner,
   Tooltip,
 } from "@nextui-org/react";
@@ -23,6 +19,7 @@ import { useChat } from "ai/react";
 import clsx from "clsx";
 import OpenAI from "openai";
 import { useEffect, useRef, useState } from "react";
+
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 const openai = new OpenAI({
@@ -48,9 +45,7 @@ export default function InteractiveAvatar() {
   const audioChunks = useRef<Blob[]>([]);
   const handleSubmitRef = useRef<() => void>(() => {}); // Referencia para handleSubmit
 
-
-
- /* function handleSubmit() {
+  /* function handleSubmit() {
     if (input.trim() === "") {
       return;
     }
@@ -64,6 +59,7 @@ export default function InteractiveAvatar() {
 
       if (!initialized || !avatar.current) {
         setDebug("Avatar API not initialized");
+
         return;
       }
 
@@ -81,28 +77,25 @@ export default function InteractiveAvatar() {
       {
         id: "1",
         role: "system",
-        content: "Eres Henry Hazlitt. Vas a ser un tutor y vas a responder preguntas sobre economía a los estudiantes, únicamente responderás en base a tus libros. Si te preguntan algo fuera de esos temas responde amablemente que solo respondes en el contexto de tus escritos. Por favor da una respuesta breve, eres un chatbot con un avatar por lo que tu respuesta no puede durar más de 1 minuto, responde de forma amable siempre",
+        content:
+          "Eres Henry Hazlitt. Vas a ser un tutor y vas a responder preguntas sobre economía a los estudiantes, únicamente responderás en base a tus libros. Si te preguntan algo fuera de esos temas responde amablemente que solo respondes en el contexto de tus escritos. Por favor da una respuesta breve, eres un chatbot con un avatar por lo que tu respuesta no puede durar más de 1 minuto, responde de forma amable siempre",
       },
     ],
   });
 
-
   function onSubmit() {
     // Your submit logic here
-    console.log('Submitted:', input);
+    console.log("Submitted:", input);
 
     setIsLoadingChat(true);
-      if (!input) {
-        //setDebug("Please enter text to send to ChatGPT");
-        setDebug("Debes ingresar texto");
-        return;
-      }
-      handleSubmit();
-    
+    if (!input) {
+      //setDebug("Please enter text to send to ChatGPT");
+      setDebug("Debes ingresar texto");
+
+      return;
+    }
+    handleSubmit();
   }
-
-  
-
 
   async function fetchAccessToken() {
     try {
@@ -110,10 +103,13 @@ export default function InteractiveAvatar() {
         method: "POST",
       });
       const token = await response.text();
+
       console.log("Access Token:", token); // Log the token to verify
+
       return token;
     } catch (error) {
       console.error("Error fetching access token:", error);
+
       return "";
     }
   }
@@ -123,6 +119,7 @@ export default function InteractiveAvatar() {
     await updateToken();
     if (!avatar.current) {
       setDebug("Avatar API is not initialized");
+
       return;
     }
 
@@ -134,39 +131,36 @@ export default function InteractiveAvatar() {
           newSessionRequest: {
             quality: "low",
             avatarName: "josh_lite3_20230714",
-            voice: { voiceId: '001cc6d54eae4ca2b5fb16ca8e8eb9bb' },
+            voice: { voiceId: "001cc6d54eae4ca2b5fb16ca8e8eb9bb" },
           },
         },
-        setDebug
+        setDebug,
       );
+
       console.log(res);
-      
+
       setData(res);
       setStream(avatar.current.mediaStream);
-     // handleSpeak();
-
-     
-
+      // handleSpeak();
     } catch (error) {
       console.error("Error starting avatar session:", error);
-      console.log(error)
-      
-     /* setDebug(
+      console.log(error);
+
+      /* setDebug(
         `There was an error starting the session. ${"7e56728c6b9a4469b3d1367a3464f2ad" ? "This custom voice ID may not be supported." : ""}`
       );*/
 
-      setDebug(
-        `${error}`
-      );
+      setDebug(`${error}`);
     }
     setIsLoadingSession(false);
   }
 
   async function updateToken() {
     const newToken = await fetchAccessToken();
+
     console.log("Updating Access Token:", newToken); // Log token for debugging
     avatar.current = new StreamingAvatarApi(
-      new Configuration({ accessToken: newToken })
+      new Configuration({ accessToken: newToken }),
     );
 
     const startTalkCallback = (e: any) => {
@@ -187,6 +181,7 @@ export default function InteractiveAvatar() {
   async function handleInterrupt() {
     if (!initialized || !avatar.current) {
       setDebug("Avatar API not initialized");
+
       return;
     }
     await avatar.current
@@ -199,23 +194,30 @@ export default function InteractiveAvatar() {
   async function endSession() {
     if (!initialized || !avatar.current) {
       setDebug("Avatar API not initialized");
+
       return;
     }
     await avatar.current.stopAvatar(
       { stopSessionRequest: { sessionId: data?.sessionId } },
-      setDebug
+      setDebug,
     );
     setStream(undefined);
   }
 
   async function handleSpeak() {
-   // setIsLoadingRepeat(true);
+    // setIsLoadingRepeat(true);
     if (!initialized || !avatar.current) {
       setDebug("Avatar API not initialized");
+
       return;
     }
     await avatar.current
-      .speak({ taskRequest: { text: 'Hola soy Henry Hazlitt. A lo largo de nuestra interacción, responderé tus preguntas y compartiré conocimientos basados en las obras y escritos, que he publicado a lo largo de mi carrera.  Así que puedes realizarme cualquier pregunta sobre economía.', sessionId: data?.sessionId } })
+      .speak({
+        taskRequest: {
+          text: "Hola soy Henry Hazlitt. A lo largo de nuestra interacción, responderé tus preguntas y compartiré conocimientos basados en las obras y escritos, que he publicado a lo largo de mi carrera.  Así que puedes realizarme cualquier pregunta sobre economía.",
+          sessionId: data?.sessionId,
+        },
+      })
       .catch((e) => {
         setDebug(e.message);
       });
@@ -225,9 +227,10 @@ export default function InteractiveAvatar() {
   useEffect(() => {
     async function init() {
       const newToken = await fetchAccessToken();
+
       console.log("Initializing with Access Token:", newToken); // Log token for debugging
       avatar.current = new StreamingAvatarApi(
-        new Configuration({ accessToken: newToken, jitterBuffer: 20000 })
+        new Configuration({ accessToken: newToken, jitterBuffer: 20000 }),
       );
       setInitialized(true); // Set initialized to true
     }
@@ -261,13 +264,11 @@ export default function InteractiveAvatar() {
           const audioBlob = new Blob(audioChunks.current, {
             type: "audio/wav",
           });
+
           audioChunks.current = [];
           transcribeAudio(audioBlob);
 
-
-
-         // await timeout(5000); //for 5 sec delay
-
+          // await timeout(5000); //for 5 sec delay
 
           /*console.log("entrando");
     
@@ -283,8 +284,6 @@ export default function InteractiveAvatar() {
           console.log(input);
           handleSubmit(); // Realizar el submit al detener la grabación
           console.log("saliendo");*/
-    
-
 
           /*console.log("entrando");
 
@@ -300,8 +299,6 @@ export default function InteractiveAvatar() {
           console.log(input);
           handleSubmit(); // Realizar el submit al detener la grabación
           console.log("saliendo");*/
-
-
         };
         // 1000
         //        mediaRecorder.current.start();
@@ -313,9 +310,7 @@ export default function InteractiveAvatar() {
       });
   }
 
-
-
-/*
+  /*
 async function stopRecording() {
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
@@ -344,16 +339,14 @@ async function stopRecording() {
   }
 
 */
-   function stopRecording2() {
+  function stopRecording2() {
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
       setRecording(false);
 
+      // onSubmit();
 
-     // onSubmit();
-
-
-/*
+      /*
       console.log("entrando");
 
 
@@ -368,9 +361,6 @@ async function stopRecording() {
       console.log(input);
       handleSubmit(); // Realizar el submit al detener la grabación
       console.log("saliendo");*/
-
-
-
     }
   }
 
@@ -378,21 +368,15 @@ async function stopRecording() {
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
       setRecording(false);
-      
+
       // Agregamos un pequeño retraso para asegurar que la transcripción se haya completado
       setTimeout(() => {
         if (input.trim() !== "") {
           onSubmit();
-        }
-        else{
+        } else {
           console.log("no hay nada");
         }
       }, 3000); // 1 segundo de retraso
-
-    
-
-      
-
     }
   }
 
@@ -405,9 +389,10 @@ async function stopRecording() {
       const response = await openai.audio.transcriptions.create({
         model: "whisper-1",
         file: audioFile,
-        language: "es" // "en"
+        language: "es", // "en"
       });
       const transcription = response.text;
+
       console.log("Transcription: ", transcription);
       setInput(transcription);
       //onSubmit(); // Llamar a onSubmit inmediatamente después de establecer el input
@@ -416,11 +401,6 @@ async function stopRecording() {
       console.error("Error transcribing audio:", error);
     }
   }
-
-
-
- 
-
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -442,18 +422,18 @@ async function stopRecording() {
               </video>
               <div className="flex flex-col gap-2 absolute bottom-3 right-3">
                 <Button
-                  size="md"
-                  onClick={handleInterrupt}
                   className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
+                  size="md"
                   variant="shadow"
+                  onClick={handleInterrupt}
                 >
                   Detener respuesta
                 </Button>
                 <Button
-                  size="md"
-                  onClick={endSession}
                   className="bg-gradient-to-tr from-indigo-500 to-indigo-300  text-white rounded-lg"
+                  size="md"
                   variant="shadow"
+                  onClick={endSession}
                 >
                   Finalizar conversación / Reiniciar
                 </Button>
@@ -461,25 +441,24 @@ async function stopRecording() {
             </div>
           ) : !isLoadingSession ? (
             <div className="h-full justify-center items-center flex flex-col gap-8 w-[500px] self-center">
-            
               <Button
-                size="md"
-                onClick={startSession}
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
+                size="md"
                 variant="shadow"
+                onClick={startSession}
               >
                 Empezar conversación
               </Button>
             </div>
           ) : (
-            <Spinner size="lg" color="default" />
+            <Spinner color="default" size="lg" />
           )}
         </CardBody>
         <Divider />
 
-  {/* This is how you write single line comments inside JSX */}
-  <CardFooter className="flex flex-col gap-3"  hidden={true}>
-     { /*
+        {/* This is how you write single line comments inside JSX */}
+        <CardFooter className="flex flex-col gap-3" hidden={true}>
+          {/*
           <InteractiveAvatarTextInput
             label="Repeat"
             placeholder="Type something for the avatar to repeat"
@@ -489,44 +468,44 @@ async function stopRecording() {
             disabled={!stream}
             loading={isLoadingRepeat}
           />
-         */ }
+         */}
           <InteractiveAvatarTextInput
-            label="Chat"
-            placeholder="Pregúntale a Henry Hazlitt"
-            input={input}
-            onSubmit={onSubmit}
-            setInput={setInput}
-            handleSubmit={handleSubmit}
-            loading={isLoadingChat}
+            disabled={!stream}
             endContent={
               <Tooltip
                 content={!recording ? "Start recording" : "Stop recording"}
               >
                 <Button
-                  onClick={!recording ? startRecording : stopRecording}
-                  isDisabled={!stream}
                   isIconOnly
                   className={clsx(
                     "mr-4 text-white",
                     !recording
                       ? "bg-gradient-to-tr from-indigo-500 to-indigo-300"
-                      : ""
+                      : "",
                   )}
+                  isDisabled={!stream}
                   size="sm"
                   variant="shadow"
+                  onClick={!recording ? startRecording : stopRecording}
                 >
                   {!recording ? (
                     <Microphone size={20} />
                   ) : (
                     <>
-                      <div className="absolute h-full w-full bg-gradient-to-tr from-indigo-500 to-indigo-300 animate-pulse -z-10"></div>
+                      <div className="absolute h-full w-full bg-gradient-to-tr from-indigo-500 to-indigo-300 animate-pulse -z-10" />
                       <MicrophoneStage size={20} />
                     </>
                   )}
                 </Button>
               </Tooltip>
             }
-            disabled={!stream}
+            handleSubmit={handleSubmit}
+            input={input}
+            label="Chat"
+            loading={isLoadingChat}
+            placeholder="Pregúntale a Henry Hazlitt"
+            setInput={setInput}
+            onSubmit={onSubmit}
           />
         </CardFooter>
       </Card>

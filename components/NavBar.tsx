@@ -1,14 +1,8 @@
 "use client";
 
-import {
-  Link,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-} from "@nextui-org/react";
-import { GithubIcon, HeyGenLogo } from "./Icons";
-import { ThemeSwitch } from "./ThemeSwitch";
+import { Link, Navbar, NavbarBrand } from "@nextui-org/react";
+
+import { HeyGenLogo } from "./Icons";
 
 export default function NavBar() {
   return (
@@ -23,7 +17,6 @@ export default function NavBar() {
           </p>
         </div>
       </NavbarBrand>
-    
     </Navbar>
   );
 }
