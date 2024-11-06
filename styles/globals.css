@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilo para listas */
+li {
+  list-style-type: square;
+  margin-left: 30px;
+  padding: 2px;
+}
+
+/* Contenedor principal */
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contenedor responsivo */
+.responsive-container {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem; /* Valor por defecto para pantallas grandes */
+}
+
+/* Media Queries para diferentes tamaños de pantalla */
+@media (max-width: 1200px) {
+  .responsive-container {
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-container {
+    padding: 0 0.5rem;
+  }
+}
+
+/* Ajustes adicionales para la responsividad */
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .main {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--color-nav-background);
+  align-items: center; /* Alinea verticalmente los elementos */
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    padding: 1rem 2rem;
+  }
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand p {
+  margin-left: 1rem;
+}
+
+
+.console {
+  width: 100%;
+  word-break: break-word;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .console {
+    text-align: right;
+  }
+}
